@@ -10,8 +10,13 @@ set(FILES
 set(GLAD ./deps/glad/glad.h
          ./deps/glad.c)
 
+if (WIN32)
+    list(APPEND OPENGL_LIBRARIES opengl32)
+else() # Linux
+	list(APPEND OPENGL_LIBRARIES GL GLEW)
+endif()
+
 add_executable(simple ${FILES} ${GLAD})
 
 target_include_directories(simple PUBLIC ${INCLUDE_DIRS} "./deps")
-target_link_libraries(simple opengl32 winmm glfw ${LIBRARIES})
-#target_link_libraries(simple GL GLEW glfw ${LIBRARIES})
+target_link_libraries(simple glfw ${LIBRARIES} ${OPENGL_LIBRARIES})
